@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <DebugType>portable</DebugType>
+      <TargetName>$(AssemblyName).net</TargetName>
+      <DefineConstants>SERVER</DefineConstants>
+      <AssemblyName>Races.Server.net</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <PlatformTarget>x64</PlatformTarget>
+      <OutputPath>bin\Debug</OutputPath>
+    </PropertyGroup>
+  
+    <ItemGroup>
+       <Compile Include="../Shared/*.cs" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <Compile Remove="..\Shared\Dummy.cs" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <PackageReference Include="CitizenFX.Core.Server" Version="1.0.2270" />
+      <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <Folder Include="Shared\" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\Shared\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+  
+    <ItemGroup>
+      <Compile Update="..\Shared\IRace.cs" Link="Shared\IRace.cs" />
+      <Compile Update="..\Shared\Point.cs" Link="Shared\Point.cs" />
+      <Compile Update="..\Shared\Race.cs" Link="Shared\Race.cs" />
+      <Compile Update="..\Shared\RaceStatus.cs" Link="Shared\RaceStatus.cs" />
+      <Compile Update="..\Shared\RaceType.cs" Link="Shared\RaceType.cs" />
+    </ItemGroup>
+</Project>
+  

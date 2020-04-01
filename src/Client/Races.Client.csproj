@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <TargetFramework>net452</TargetFramework>
+      <DebugType>embedded</DebugType>
+      <TargetName>$(AssemblyName).net</TargetName>
+      <DefineConstants>CLIENT</DefineConstants>
+      <LangVersion>7.3</LangVersion>
+      <Configurations>Debug;Release</Configurations>
+      <AssemblyName>Races.Client.net</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <OutputPath>bin\Debug</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="../Shared/*.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="..\Shared\Dummy.cs" />
+      <Compile Remove="..\Shared\IRace.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CitizenFX.Core.Client" Version="1.0.2289" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\Shared\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="..\Shared\Point.cs" Link="Shared\Point.cs" />
+      <Compile Update="..\Shared\Race.cs" Link="Shared\Race.cs" />
+      <Compile Update="..\Shared\RaceStatus.cs" Link="Shared\RaceStatus.cs" />
+      <Compile Update="..\Shared\RaceType.cs" Link="Shared\RaceType.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="RaceScript\Interfaces\" />
+    </ItemGroup>
+</Project>
