@@ -1,4 +1,4 @@
-fx_version 'adament'
+fx_version 'adamant'
 game 'gta5'
 
 file 'Client/**/*.dll'

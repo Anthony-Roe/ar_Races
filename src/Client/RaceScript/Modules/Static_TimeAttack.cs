@@ -23,7 +23,6 @@
         private List<TimeSpan> Times { get; set; }
 
         public List<Point> PointList { get; set; }
-
         private Vehicle RaceVehicle { get; set; }
 
         private int NextPointIndex { get; set; }
