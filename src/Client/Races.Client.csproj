@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
       <TargetFramework>net452</TargetFramework>
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
       <DebugType>embedded</DebugType>
       <TargetName>$(AssemblyName).net</TargetName>
       <DefineConstants>CLIENT</DefineConstants>
@@ -9,17 +10,8 @@
       <AssemblyName>Races.Client.net</AssemblyName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <OutputPath>bin\Debug</OutputPath>
+      <OutputPath>..\..\Client</OutputPath>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Compile Include="../Shared/*.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="..\Shared\Dummy.cs" />
-      <Compile Remove="..\Shared\IRace.cs" />
-    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="CitizenFX.Core.Client" Version="1.0.2289" />
@@ -27,18 +19,18 @@
 
     <ItemGroup>
       <Reference Include="Newtonsoft.Json">
-        <HintPath>..\Shared\Newtonsoft.Json.dll</HintPath>
+        <HintPath>..\dependencies\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="NN_Api.Client.net">
+        <HintPath>..\dependencies\NN_Api.Client.net.dll</HintPath>
       </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="..\Shared\Point.cs" Link="Shared\Point.cs" />
-      <Compile Update="..\Shared\Race.cs" Link="Shared\Race.cs" />
-      <Compile Update="..\Shared\RaceStatus.cs" Link="Shared\RaceStatus.cs" />
-      <Compile Update="..\Shared\RaceType.cs" Link="Shared\RaceType.cs" />
+      <Folder Include="RaceScript\Interfaces\" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="RaceScript\Interfaces\" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 </Project>

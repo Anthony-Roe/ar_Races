@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
       <TargetFramework>netstandard2.0</TargetFramework>
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
       <DebugType>portable</DebugType>
       <TargetName>$(AssemblyName).net</TargetName>
       <DefineConstants>SERVER</DefineConstants>
@@ -8,16 +9,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <PlatformTarget>x64</PlatformTarget>
-      <OutputPath>bin\Debug</OutputPath>
+      <OutputPath>..\..\Server</OutputPath>
     </PropertyGroup>
-  
-    <ItemGroup>
-       <Compile Include="../Shared/*.cs" />
-    </ItemGroup>
-  
-    <ItemGroup>
-      <Compile Remove="..\Shared\Dummy.cs" />
-    </ItemGroup>
   
     <ItemGroup>
       <PackageReference Include="CitizenFX.Core.Server" Version="1.0.2270" />
@@ -25,21 +18,19 @@
     </ItemGroup>
   
     <ItemGroup>
-      <Folder Include="Shared\" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
   
     <ItemGroup>
       <Reference Include="Newtonsoft.Json">
-        <HintPath>..\Shared\Newtonsoft.Json.dll</HintPath>
+        <HintPath>..\dependencies\Newtonsoft.Json.dll</HintPath>
       </Reference>
-    </ItemGroup>
-  
-    <ItemGroup>
-      <Compile Update="..\Shared\IRace.cs" Link="Shared\IRace.cs" />
-      <Compile Update="..\Shared\Point.cs" Link="Shared\Point.cs" />
-      <Compile Update="..\Shared\Race.cs" Link="Shared\Race.cs" />
-      <Compile Update="..\Shared\RaceStatus.cs" Link="Shared\RaceStatus.cs" />
-      <Compile Update="..\Shared\RaceType.cs" Link="Shared\RaceType.cs" />
+      <Reference Include="NN_Api.Server.net">
+        <HintPath>..\dependencies\NN_Api.Server.net.dll</HintPath>
+      </Reference>
+      <Reference Include="vNoSql_Api">
+        <HintPath>..\dependencies\vNoSql_Api.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>
   

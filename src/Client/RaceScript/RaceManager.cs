@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using CitizenFX.Core;
@@ -19,19 +21,32 @@
     {
         public static List<IRace> Races = null;
 
+        public static List<Time> Times = null;
+
         public static RaceStatus Status = RaceStatus.Idle;
 
-        public static Static_TimeAttackCreator Creator;
+        public static Static_TimeAttackCreator TimeAttackCreator;
 
         public async void Initialize()
         {
             Races = new List<IRace>();
-            Creator = new Static_TimeAttackCreator();
+            Times = new List<Time>();
+            TimeAttackCreator = new Static_TimeAttackCreator();
 
-            RegisterCommand("createrace", new Action<int, List<object>, string>(
-                (int source, List<object> args, string raw) => { if (Status == RaceStatus.Idle) Creator.CreateRace(); }), false);
-            RegisterCommand("finish", new Action<int, List<object>, string>(
-                (int source, List<object> args, string raw) => { if (Status == RaceStatus.Creating) Creator.Finish(); }), false);
+            // Time Attack
+            this.Exports.Add("TimerCreateRace", new Action(TimeAttackCreator.CreateRace));
+            this.Exports.Add("TimerFinishRace", new Action(TimeAttackCreator.Finish));
+            this.Exports.Add("TimerPlacePoint", new Action(TimeAttackCreator.PlacePoint));
+            this.Exports.Add("TimerCancelRace", new Action(TimeAttackCreator.Cancel));
+            this.Exports.Add("TimerDeletePreviousCP", new Action(TimeAttackCreator.DeletePreviousCheckpoint));
+            this.Exports.Add("TimerSetName", new Action<string>(TimeAttackCreator.Set));// Set scale
+            this.Exports.Add("TimerSetScale", new Action<int, int, int>(TimeAttackCreator.Set));// Set scale
+            this.Exports.Add("TimerSetOffset", new Action<float, float, float>(TimeAttackCreator.Set));// Set scale
+            this.Exports.Add("TimerSetMarker", new Action<int>(TimeAttackCreator.Set)); // Set marker type
+            this.Exports.Add("TimerSetColor", new Action<float, float, float, float>(TimeAttackCreator.Set)); // Set marker color
+
+
+            this.Exports.Add("GetStatus", new Func<string>(() => Status.ToString()));
 
             Tick();
             SlowTick();
@@ -42,21 +57,40 @@
             try
             {
                 Races = new List<IRace>();
-                // TO DO: Get list of already made races
                 foreach (var race in races)
                 {
                     switch (race.Type)
                     {
                         case RaceType.Static_TimeAttack:
-                            Races.Add(new Static_TimeAttack {Name = race.Name, PointList = race.PointList});
+                            Races.Add(new Static_TimeAttack {Name = race.Name, PointList = race.PointList, Id = race.Id, Type = race.Type});
                             break;
                     }
                 }
-                
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error in Populate: " + e);
+                Debug.WriteLine("Error in Populate Races: " + e);
+            }
+        }
+
+        public async Task PopulateTimes(List<Time> times)
+        {
+            try
+            {
+                Times = new List<Time>();
+                Times = times;
+                foreach (var race in Races)
+                {
+                    var best = Times.Where(r => r.MapId == race.Id).OrderBy(t => TimeSpan.Parse(t.TotalTime));
+                    if (best.Any())
+                        race.BestTime = best.First();
+                    else
+                        race.BestTime = new Time();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in Populate Times: " + e);
             }
         }
 
@@ -73,7 +107,7 @@
                     {
                         foreach (var race in Races)
                         {
-                            await race.DrawStartMarker();
+                            await race.Tick();
                         }
                     }
                 }
@@ -108,7 +142,7 @@
                     Debug.WriteLine("Error in StartCheck: " + e);
                 }
 
-                await Delay(700);
+                await Delay(100);
             }
         }
     }

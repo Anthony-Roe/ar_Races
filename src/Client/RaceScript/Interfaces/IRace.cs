@@ -7,6 +7,9 @@
 
     public interface IRace
     {
+        int Id { get; set; }
+        RaceType Type { get; set; }
+        Time BestTime { get; set; }
         string Name { get; set; }
         List<Point> PointList { get; set; }
 
@@ -17,7 +20,7 @@
         /// </summary>
         void StartRace();
 
-        Task DrawStartMarker();
+        Task Tick();
 
         /// <summary>
         /// Handles checkpoints and timer
